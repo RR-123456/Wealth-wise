@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEALTHWISE (RR)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { --blue: #1a365d; --red: #dc2626; }
+        body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .glass { background: rgba(17, 17, 17, 0.8); backdrop-filter: blur(10px); border: 1px solid var(--blue); }
+        .glow-blue { box-shadow: 0 0 20px rgba(26, 54, 93, 0.4); }
+        .crimson-gauge { border-color: var(--red); box-shadow: 0 0 10px rgba(220, 38, 38, 0.3); }
+        input[type="range"] { accent-color: var(--blue); }
+    </style>
+</head>
+<body class="p-4 pb-24">
+
+    <div class="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
+        <div>
+            <h1 class="text-xl font-black tracking-tighter text-blue-500">WEALTHWISE <span class="text-white">(RR)</span></h1>
+            <p id="clock" class="text-[10px] text-gray-500 font-mono uppercase"></p>
+        </div>
+        <div class="flex items-center gap-3">
+            <select id="lang" onchange="switchLanguage()" class="bg-transparent text-xs border border-blue-900 rounded px-1">
+                <option value="en">ENG</option>
+                <option value="ta">தமிழ்</option>
+            </select>
+            <button onclick="toggleSettings()" class="text-xl">⚙️</button>
+        </div>
+    </div>
+
+    <div id="main-view">
+        <div class="glass p-6 rounded-3xl mb-6 glow-blue text-center">
+            <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Total Net Worth</p>
+            <h2 id="net-worth-display" class="text-4xl font-bold">₹15,00,000</h2>
+            <div class="flex justify-center gap-4 mt-4 text-[10px]">
+                <span class="text-blue-400">ASSETS: ₹25L</span>
+                <span class="text-red-500">DEBTS: ₹10L</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="glass p-4 rounded-2xl">
+                <h3 class="text-[10px] font-bold text-blue-400 mb-3 uppercase">8 Asset Classes</h3>
+                <div class="space-y-2 text-[10px]">
+                    <div class="flex justify-between"><span>Property</span><span>₹15L</span></div>
+                    <div class="flex justify-between"><span>Moomoo (USD)</span><span>₹1.5L</span></div>
+                    <div class="flex justify-between"><span>Bank (SGD)</span><span>₹1.5L</span></div>
+                    <div class="w-full bg-gray-900 h-1 rounded-full"><div class="bg-blue-500 h-1 w-full rounded-full"></div></div>
+                </div>
+            </div>
+            <div class="glass p-4 rounded-2xl">
+                <h3 class="text-[10px] font-bold text-red-500 mb-3 uppercase">4 Liabilities</h3>
+                <div class="space-y-2 text-[10px]">
+                    <div class="flex justify-between"><span>Housing Loan</span><span>40%</span></div>
+                    <div class="flex justify-between"><span>Car Loan</span><span>75%</span></div>
+                    <div class="w-full bg-gray-900 h-1 rounded-full"><div class="bg-red-600 h-1 w-3/4 rounded-full"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass p-4 rounded-2xl mb-6">
+            <h3 class="text-[10px] font-bold text-gray-400 mb-4 uppercase">Monthly Utilities</h3>
+            <div class="flex justify-around items-end h-20 gap-2">
+                <div class="flex flex-col items-center w-full"><div class="bg-blue-900 w-full h-4 rounded-t"></div><span class="text-[8px] mt-1">Water</span></div>
+                <div class="flex flex-col items-center w-full"><div class="bg-blue-600 w-full h-16 rounded-t"></div><span class="text-[8px] mt-1">Elec</span></div>
+                <div class="flex flex-col items-center w-full"><div class="bg-blue-400 w-full h-8 rounded-t"></div><span class="text-[8px] mt-1">Web</span></div>
+            </div>
+        </div>
+
+        <div class="glass p-4 rounded-3xl bg-gradient-to-r from-black to-blue-950 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-2xl animate-bounce">🤖</div>
+            <div class="flex-1">
+                <p id="bot-speech" class="text-[11px] leading-tight text-blue-100">"Hello Pragath. Your 2028 prediction is locked behind PIN 1234."</p>
+                <button onclick="triggerVoice()" class="mt-2 text-[9px] bg-blue-600 px-3 py-1 rounded-full font-bold">LISTEN</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="settings-modal" class="fixed inset-0 bg-black z-50 p-6 hidden">
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="text-xl font-bold text-blue-500">SYSTEM SETTINGS</h2>
+            <button onclick="toggleSettings()" class="text-3xl">&times;</button>
+        </div>
+        <div class="space-y-6">
+            <div><label class="text-[10px] text-gray-500 uppercase">Profile Name</label>
+            <input type="text" id="user-name" value="Pragath.B RR" class="w-full bg-gray-900 border-b border-blue-900 p-2 text-white outline-none"></div>
+            <div><label class="text-[10px] text-gray-500 uppercase">Security PIN</label>
+            <input type="password" id="user-pin" value="1234" maxlength="4" class="w-full bg-gray-900 border-b border-blue-900 p-2 text-white outline-none"></div>
+            <button onclick="saveAndExit()" class="w-full bg-blue-700 py-4 rounded-2xl font-bold">SAVE & REBOOT</button>
+        </div>
+    </div>
+
+    <script>
+        const config = { name: "Pragath.B RR", pin: "1234", lang: "en" };
+        const scripts = {
+            en: () => `Welcome ${config.name}. Your net worth is ₹15L. Your 2028 target is ₹28.5L.`,
+            ta: () => `வணக்கம் ${config.name}. உங்கள் நிகர மதிப்பு ₹15 லட்சம். 2028 இலக்கு ₹28.5 லட்சம்.`
+        };
+
+        function updateClock() { document.getElementById('clock').innerText = new Date().toLocaleString(); }
+        setInterval(updateClock, 1000);
+
+        function toggleSettings() { document.getElementById('settings-modal').classList.toggle('hidden'); }
+
+        function saveAndExit() {
+            config.name = document.getElementById('user-name').value;
+            config.pin = document.getElementById('user-pin').value;
+            switchLanguage();
+            toggleSettings();
+        }
+
+        function switchLanguage() {
+            config.lang = document.getElementById('lang').value;
+            document.getElementById('bot-speech').innerText = scripts[config.lang]();
+        }
+
+        function triggerVoice() {
+            const text = scripts[config.lang]();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = config.lang === 'ta' ? 'ta-IN' : 'en-US';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        window.onload = () => { updateClock(); switchLanguage(); };
+    </script>
+</body>
+</html> 
